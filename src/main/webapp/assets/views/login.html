@@ -1,0 +1,33 @@
+<div  style="margin: 30px"></div>
+<table class="table stormpath-login-table">
+    <thead>
+    <tr>
+        <th class="login-form">
+            Log in or <a class="register-link" href="#/signup">Create an Account</a>
+        </th>
+        <th class="social-login">&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td class="login-form">
+            <form role="form" method="POST" target="/login" id="loginForm">
+                <div class="form-group">
+                    <label for="stormpathEmail">Email</label>
+                    <input type="email" name="username" class="form-control input-lg" id="stormpathEmail" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="stormpathPassword">Password</label>
+                    <input type="password" name="password" class="form-control input-lg" id="stormpathPassword" placeholder="Password">
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-log-in" ng-click="submitForm()">Log In</button>
+                    <label>
+                        <input type="checkbox" name="rememberMe" ng-true-value="true" ng-false-value="false"> Remember me
+                    </label>
+                </div>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
