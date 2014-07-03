@@ -11,6 +11,7 @@
 
 
     <properties>
+        <jackson.version>1.9.13</jackson.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <servlet.version>3.1.0</servlet.version>
     </properties>
@@ -56,6 +57,16 @@
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
             <version>1.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-mapper-asl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.annotation</groupId>
+                    <artifactId>javax.annotation-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -71,6 +82,7 @@
             <version>1.0</version>
         </dependency>
 
+<!--
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -78,7 +90,7 @@
         </dependency>
 
         <dependency>
-            <!-- note: typically only ".0" patch version exists for core annotations -->
+            &lt;!&ndash; note: typically only ".0" patch version exists for core annotations &ndash;&gt;
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.3.0</version>
@@ -88,8 +100,18 @@
             <artifactId>jackson-core</artifactId>
             <version>2.3.1</version>
         </dependency>
+-->
 
-
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
