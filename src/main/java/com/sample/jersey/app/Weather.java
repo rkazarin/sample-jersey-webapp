@@ -1,20 +1,20 @@
 package com.sample.jersey.app;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Context;
-import javax.servlet.*;
 
 import com.stormpath.sdk.api.ApiAuthenticationResult;
+import com.stormpath.sdk.resource.ResourceException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import com.stormpath.sdk.client.*;
 import com.stormpath.sdk.application.Application;
 
+import javax.servlet.http.HttpServletRequest;
 
 import java.net.*;
 import java.io.*;
@@ -22,6 +22,9 @@ import java.io.*;
 
 @Path("/weather/{city}")
 public class Weather {
+
+
+    String applicationHref = "https://api.stormpath.com/v1/applications/5HRNSljrcYQax0oCQQovT9";
 
     @Context
     private HttpServletRequest servletRequest;
@@ -32,16 +35,18 @@ public class Weather {
 
         StormpathClient stormpathClient = new StormpathClient();
         Client myClient = stormpathClient.getClient();
+        System.out.println("Current Tenant: " + myClient.getCurrentTenant().getName());
 
-        System.out.println(myClient.getCurrentTenant().getName());
+        Application application = myClient.getResource(applicationHref, Application.class);
 
-        String applicationHref = "https://api.stormpath.com/v1/applications/5HRNSljrcYQax0oCQQovT9";
-        //Application application = myClient.getResource(applicationHref, Application.class);
+        try {
+            ApiAuthenticationResult authenticationResult = application.authenticateApiRequest(servletRequest);
 
+        } catch (ResourceException e) {
+            System.out.println(e.getMessage());
+            return "Cannot authenticate user.";
+        }
 
-        //ApiAuthenticationResult authResult = application.authenticateApiRequest()
-
-        System.out.println(servletRequest.toString());
 
         URL weatherURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + myCity);
 

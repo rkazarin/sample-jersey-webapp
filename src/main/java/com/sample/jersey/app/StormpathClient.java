@@ -14,7 +14,6 @@ public class StormpathClient {
 
         ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
         com.stormpath.sdk.client.Client client = Clients.builder().setApiKey(apiKey).build();
-        System.out.println(client.getCurrentTenant().getName());
 
         return client;
 
