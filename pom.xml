@@ -135,6 +135,13 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>org.glassfish.jersey.ext</groupId>
+            <artifactId>jersey-mvc</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+
 
     </dependencies>
 

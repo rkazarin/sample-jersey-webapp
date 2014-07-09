@@ -33,38 +33,28 @@ public class Weather {
     @Produces(MediaType.APPLICATION_JSON)
     public String getWeather(@PathParam("city") String myCity) throws Exception{
 
-        StormpathClient stormpathClient = new StormpathClient();
-        Client myClient = stormpathClient.getClient();
-        System.out.println("Current Tenant: " + myClient.getCurrentTenant().getName());
+        if(CurrentUser.isAuthorized) {
+            URL weatherURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + myCity);
 
-        Application application = myClient.getResource(applicationHref, Application.class);
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            City city = null;
 
-        try {
-            ApiAuthenticationResult authenticationResult = application.authenticateApiRequest(servletRequest);
+            try {
+                InputStream in = weatherURL.openStream();
+                city = mapper.readValue(in, City.class);
 
-        } catch (ResourceException e) {
-            System.out.println(e.getMessage());
-            return "Cannot authenticate user.";
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String result = city.toString();
+
+            return result;
         }
-
-
-        URL weatherURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + myCity);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        City city = null;
-
-        try {
-            InputStream in = weatherURL.openStream();
-            city = mapper.readValue(in, City.class);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        else {
+            return "Not allowed.";
         }
-
-        String result = city.toString();
-
-        return result;
     }
 
 
