@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="loginForm">
 <head>
     <title>My Dashboard</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.14/angular.min.js"></script>
@@ -7,7 +7,11 @@
 </head>
 <body>
 
-
+    <form name="myForm" ng-controller="weatherController">
+        <input type="radio" ng-model="city" value="London"> London <br/>
+        <input type="radio" ng-model="city" value="Berlin"> Berlin <br/>
+        The temperature in {{city}} is: {{temp}}<br/>
+    </form>
 
 
 </body>

@@ -24,3 +24,21 @@ myApp.controller('loginController', ["$scope", "$window", "$http", function($sco
     }
 
 }]);
+
+myApp.controller('weatherController', ["$scope", "$window", "$http", function($scope, $window, $http) {
+        $scope.$watch('city', function(){
+            console.log($scope.city);
+
+            $http({method: "GET", url: '/rest/weather/' + $scope.city}).success(function(data, status, headers, config) {
+                console.log(data);
+                $scope.temp = data;
+
+            })
+            .error(function(data, status, headers, config) {
+                $window.alert("Error");
+            });
+
+
+        })
+
+}]);

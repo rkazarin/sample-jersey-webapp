@@ -9,7 +9,7 @@ public class CurrentUser {
         user_name = userName;
     }
 
-    public String etUserName(){
+    public String getUserName(){
         return user_name;
     }
 }

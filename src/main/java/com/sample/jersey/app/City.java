@@ -24,8 +24,7 @@ public class City {
     @Override
     public String toString() {
        StringBuilder sb = new StringBuilder();
-        sb.append("Name= " + getName() + "\n");
-        sb.append("Temperature= " + getMain() + "\n");
+        sb.append(getMain());
 
         return sb.toString();
     }

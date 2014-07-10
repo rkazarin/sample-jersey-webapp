@@ -5,7 +5,9 @@ public class Main {
 
 
     public String getTemp() {
-        return temp;
+        double farenheit = ((Double.parseDouble(temp) - 273.15) * 1.8) + 32;
+        farenheit = (double)Math.round(farenheit * 10)/10;
+        return String.valueOf(farenheit);
     }
 
     public void setTemp(String my_temp) {
@@ -13,7 +15,7 @@ public class Main {
     }
 
     public String toString() {
-        return "The temp: " + getTemp();
+        return getTemp();
     }
 }
 
