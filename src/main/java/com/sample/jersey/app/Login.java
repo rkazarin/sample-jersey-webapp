@@ -1,7 +1,8 @@
 package com.sample.jersey.app;
 
 import com.stormpath.sdk.account.Account;
-import com.stormpath.sdk.api.ApiAuthenticationResult;
+import com.stormpath.sdk.api.ApiKey;
+import com.stormpath.sdk.api.ApiKeyList;
 import com.stormpath.sdk.application.Application;
 import com.stormpath.sdk.authc.AuthenticationRequest;
 import com.stormpath.sdk.authc.UsernamePasswordRequest;
@@ -12,13 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 
-
-import java.net.URI;
+import java.util.Iterator;
 
 
 @Path("/login")
@@ -44,8 +41,10 @@ public class Login {
 
         AuthenticationRequest request = new UsernamePasswordRequest(username, password);
 
+        Account authenticated = null;
+
         try {
-            Account authenticated = application.authenticateAccount(request).getAccount();
+            authenticated = application.authenticateAccount(request).getAccount();
 
         } catch (ResourceException e) {
             System.out.println("Failed to auth user");
@@ -53,6 +52,9 @@ public class Login {
             servletResponse.addHeader("MyResult", "Not Authorized");
             return "";
         }
+
+        CurrentUser.authenticated = authenticated;
+
 
         System.out.println("Auth success, going to dashboard.");
         servletResponse.addHeader("MyResult", "Authorized");

@@ -7,17 +7,23 @@
 </head>
 <body>
 
-    <form name="myForm" ng-controller="weatherController">
-        <input type="radio" ng-model="city" value="London"> London <br/>
-        <input type="radio" ng-model="city" value="Berlin"> Berlin <br/>
-        The temperature in {{city}} is: {{temp}}<br/>
-    </form>
-
     <script>
-    window.onbeforeunload = function(){
-        window.alert("You about to leave the page bro");
-    }
+        angular.module("loginForm", [])
+                .controller("GetAPIKeys", ["$scope", "$http", function($scope, $http) {
+                    $http({method: "GET", url: '/rest/getApiKey/'}).success(function(data, status, headers, config) {
+                        var apiKey = headers('APIKeyId');
+                        var apiSecret = headers('APIKeySecret');
+                        console.log(apiKey);
+                        console.log(apiSecret);
+                    })
+                        .error(function(data, status, headers, config) {
+                        window.alert("Error");
+                    });
+
+        }])
     </script>
+
+    <h1>Your API Key and Secret pair are {{apiKey}} : {{apiSecret}}</h1>
 
 
 </body>
