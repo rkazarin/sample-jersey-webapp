@@ -13,12 +13,15 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import com.stormpath.sdk.client.*;
 import com.stormpath.sdk.application.Application;
+import sun.java2d.pipe.hw.ContextCapabilities;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.net.*;
 import java.io.*;
 
+import java.util.Base64;
 
 @Path("/api/weather/{city}")
 public class WeatherApi {
@@ -26,6 +29,8 @@ public class WeatherApi {
     String applicationHref = "https://api.stormpath.com/v1/applications/5HRNSljrcYQax0oCQQovT9";
     @Context
     private HttpServletRequest servletRequest;
+    @Context
+    private HttpServletResponse servletResponse;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -34,6 +39,8 @@ public class WeatherApi {
         Client myClient = stormpathClient.getClient();
 
         Application application = myClient.getResource(applicationHref, Application.class);
+
+        System.out.println(servletRequest.getHeader("Authorization"));
 
         try {
             ApiAuthenticationResult authenticationResult = application.authenticateApiRequest(servletRequest);

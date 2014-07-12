@@ -27,6 +27,7 @@ public class Keys {
     @Context
     private HttpServletResponse servletResponse;
 
+    @GET
     public String getApiKey() throws Exception {
         ApiKeyList apiKeyList = CurrentUser.authenticated.getApiKeys();
 

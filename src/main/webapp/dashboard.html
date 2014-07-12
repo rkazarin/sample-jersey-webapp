@@ -3,27 +3,23 @@
 <head>
     <title>My Dashboard</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.14/angular.min.js"></script>
+    <script src="bower_components/angular-base64/angular-base64.js"></script>
     <script src ="app.js"></script>
 </head>
 <body>
 
-    <script>
-        angular.module("loginForm", [])
-                .controller("GetAPIKeys", ["$scope", "$http", function($scope, $http) {
-                    $http({method: "GET", url: '/rest/getApiKey/'}).success(function(data, status, headers, config) {
-                        var apiKey = headers('APIKeyId');
-                        var apiSecret = headers('APIKeySecret');
-                        console.log(apiKey);
-                        console.log(apiSecret);
-                    })
-                        .error(function(data, status, headers, config) {
-                        window.alert("Error");
-                    });
+<div class = "key" ng-controller="ApiKeyController">
+    Your API key:secret pair is = {{apiKey}} : {{apiSecret}} <br/>
+</div>
 
-        }])
-    </script>
+Select your city to make a REST API call and find out the weather!
 
-    <h1>Your API Key and Secret pair are {{apiKey}} : {{apiSecret}}</h1>
+<form name = "myForm" ng-controller="RestController">
+    <input type="radio" ng-model="city" value="London"> London <br/>
+    <input type="radio" ng-model="city" value="Berlin"> Berlin <br/>
+    <button ng-click="makeRestCall()">Make Rest Call</button>
+    The temperature in {{myCity}} is: {{temp}} </br>
+</form>
 
 
 </body>
