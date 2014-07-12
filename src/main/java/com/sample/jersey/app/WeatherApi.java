@@ -46,6 +46,7 @@ public class WeatherApi {
             ApiAuthenticationResult authenticationResult = application.authenticateApiRequest(servletRequest);
         } catch (ResourceException e) {
             System.out.println(e.getMessage());
+            servletResponse.sendError(403);
             return "Cannot authenticate user.";
         }
 
