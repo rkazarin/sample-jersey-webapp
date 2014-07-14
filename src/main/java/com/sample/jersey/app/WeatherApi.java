@@ -13,15 +13,12 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import com.stormpath.sdk.client.*;
 import com.stormpath.sdk.application.Application;
-import sun.java2d.pipe.hw.ContextCapabilities;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.net.*;
 import java.io.*;
-
-import java.util.Base64;
 
 @Path("/api/weather/{city}")
 public class WeatherApi {

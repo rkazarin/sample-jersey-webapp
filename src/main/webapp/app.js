@@ -1,5 +1,25 @@
 var myApp = angular.module('loginForm', []);
 
+myApp.controller('makeAccountController', ["$scope", "$http", "$window", function($scope, $http, $window) {
+    $scope.signUp = function() {
+
+        $http.defaults.headers.common.firstName = $scope.firstName;
+        $http.defaults.headers.common.lastName = $scope.lastName;
+        $http.defaults.headers.common.userName = $scope.userName;
+        $http.defaults.headers.common.email = $scope.email;
+        $http.defaults.headers.common.password = $scope.password;
+
+        $http({method: "POST", url: '/rest/makeStormpathAccount'}).success(function(data, status, headers, config) {
+            $window.alert("Account Created! Now, Sign In!");
+
+        }).
+            error(function(data, status, headers, config) {
+                $window.alert("Error");
+        });
+    }
+
+}]);
+
 myApp.service('sharedProperties', function() {
     var apiKey = "";
     var apiSecret = "";
