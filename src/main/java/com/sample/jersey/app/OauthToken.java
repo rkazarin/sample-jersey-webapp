@@ -35,41 +35,35 @@ public class OauthToken {
                            @Context final HttpServletResponse servletResponse,
                            @FormParam("grant_type") String grantType) throws Exception {
 
-
+        /*Jersey's request.getParameter() always returns null, so we have to reconstruct the entire request ourselves in order to keep data
+          See: https://java.net/jira/browse/JERSEY-766
+         */
         Map<String, String[]> headers = new HashMap<String, String[]>();
 
         for(String httpHeaderName : httpHeaders.getRequestHeaders().keySet()) {
 
             List<String> values = httpHeaders.getRequestHeader(httpHeaderName);
-
             String[] valueArray = new String[values.size()];
-
             httpHeaders.getRequestHeader(httpHeaderName).toArray(valueArray);
-
             headers.put(httpHeaderName, valueArray);
         }
 
         Map<String, String[]> body = new HashMap<String, String[]>();
-
         String[] bodyArray = {grantType};
-
         body.put("grant_type", bodyArray );
 
         HttpRequest request = HttpRequests.method(HttpMethod.POST).headers(headers).parameters(body).build();
 
-        System.out.println("In getToken() " + grantType);
 
         StormpathClient stormpathClient = new StormpathClient();
         Client myClient = stormpathClient.getClient();
 
         Application application = myClient.getResource(applicationHref, Application.class);
-        System.out.println("In getToken2()");
-
         ApiAuthenticationResult apiResult = null;
 
 
-        System.out.println("In getToken3()");
 
+        //Get a token, send it back to the client
         try {
 
             final HttpServletResponse httpRespnse = servletResponse;
@@ -99,15 +93,11 @@ public class OauthToken {
                 }
             });
 
-            System.out.println("In 4()");
-
 
         } catch (Exception e) {
-            System.out.println("Get Token Error");
             servletResponse.sendError(403);
             e.printStackTrace();
         }
-
 
         return "";
 

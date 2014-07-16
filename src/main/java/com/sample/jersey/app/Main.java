@@ -1,5 +1,7 @@
 package com.sample.jersey.app;
 
+//POJO for parsing temperature from weather API. For use with City class
+
 public class Main {
     private String temp;
 

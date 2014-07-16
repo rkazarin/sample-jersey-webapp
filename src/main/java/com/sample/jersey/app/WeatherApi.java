@@ -32,6 +32,7 @@ public class WeatherApi {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getWeatherApi(@PathParam("city") String myCity) throws Exception {
+
         StormpathClient stormpathClient = new StormpathClient();
         Client myClient = stormpathClient.getClient();
 
@@ -39,6 +40,7 @@ public class WeatherApi {
 
         System.out.println(servletRequest.getHeader("Authorization"));
 
+        //Make sure this use is allowed to target is endpoint
         try {
             ApiAuthenticationResult authenticationResult = application.authenticateApiRequest(servletRequest);
 
@@ -50,6 +52,7 @@ public class WeatherApi {
 
         URL weatherURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + myCity);
 
+        //Parse weather data into our POJO
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         City city = null;

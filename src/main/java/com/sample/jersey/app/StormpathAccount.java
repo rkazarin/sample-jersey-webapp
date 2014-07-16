@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import com.stormpath.sdk.client.*;
 import com.stormpath.sdk.application.Application;
+import org.codehaus.jettison.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,29 +30,30 @@ public class StormpathAccount {
     private HttpServletRequest servletRequest;
 
     @POST
-    public String createAccount() throws Exception {
+    public String createAccount(String data) throws Exception {
 
-        System.out.println("In /makeStormpathAccount");
 
         StormpathClient stormpathClient = new StormpathClient();
         Client myClient = stormpathClient.getClient();
         Application application = myClient.getResource(applicationHref, Application.class);
         Account account = myClient.instantiate(Account.class);
 
-        //Get info from header
-        String firstName = servletRequest.getHeader("firstName");
-        String lastName = servletRequest.getHeader("lastName");
-        String userName = servletRequest.getHeader("userName");
-        String email = servletRequest.getHeader("email");
-        String password = servletRequest.getHeader("password");
+        //Get data from request
+        JSONObject json = new JSONObject(data);
 
+        String firstName = json.getString("first_name");
+        String lastName = json.getString("last_name");
+        String userName = json.getString("user_name");
+        String email = json.getString("email");
+        String password = json.getString("password");
+
+        //Set account info and create the account
         account.setGivenName(firstName);
         account.setSurname(lastName);
         account.setUsername(userName);
         account.setEmail(email);
         account.setPassword(password);
 
-        System.out.println("Creating account");
         application.createAccount(account);
 
         return "";

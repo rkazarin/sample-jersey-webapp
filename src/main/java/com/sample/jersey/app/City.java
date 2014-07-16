@@ -1,5 +1,7 @@
 package com.sample.jersey.app;
 
+//POJO for parsing JSON data from weather API
+
 public class City {
 
     private String name;
