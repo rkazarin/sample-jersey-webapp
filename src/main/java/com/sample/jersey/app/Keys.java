@@ -6,18 +6,19 @@ import org.codehaus.jettison.json.JSONObject;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import java.util.Iterator;
 
 @Path("/getApiKey")
 public class Keys {
 
-    String applicationHref = "https://api.stormpath.com/v1/applications/5HRNSljrcYQax0oCQQovT9";
-
     @Context
     private HttpServletResponse servletResponse;
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     public String getApiKey() throws Exception {
         ApiKeyList apiKeyList = CurrentUser.authenticated.getApiKeys();
 
@@ -45,10 +46,6 @@ public class Keys {
         json.put("api_key", apiKeyId);
         json.put("api_secret", apiSecret);
 
-        //Send key and secret in the response
-        servletResponse.getWriter().print(json.toString());
-        servletResponse.getWriter().flush();
-
-        return "";
+        return json.toString();
     }
 }

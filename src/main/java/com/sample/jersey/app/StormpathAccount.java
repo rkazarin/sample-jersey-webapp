@@ -25,18 +25,12 @@ import java.io.*;
 @Path("/makeStormpathAccount")
 public class StormpathAccount {
 
-    String applicationHref = "https://api.stormpath.com/v1/applications/5HRNSljrcYQax0oCQQovT9";
-    @Context
-    private HttpServletRequest servletRequest;
-
     @POST
-    public String createAccount(String data) throws Exception {
+    public void createAccount(String data) throws Exception {
 
 
-        StormpathClient stormpathClient = new StormpathClient();
-        Client myClient = stormpathClient.getClient();
-        Application application = myClient.getResource(applicationHref, Application.class);
-        Account account = myClient.instantiate(Account.class);
+        Application application = StormpathUtils.myClient.getResource(StormpathUtils.applicationHref, Application.class);
+        Account account = StormpathUtils.myClient.instantiate(Account.class);
 
         //Get data from request
         JSONObject json = new JSONObject(data);
@@ -56,7 +50,6 @@ public class StormpathAccount {
 
         application.createAccount(account);
 
-        return "";
     }
 
 }

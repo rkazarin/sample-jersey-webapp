@@ -34,6 +34,26 @@ myApp.service('sharedProperties', function() {
     };
 });
 
+myApp.controller('loginController', ["$scope", "$window", "$http", function($scope, $window, $http) {
+
+    $scope.submitFunction = function() {
+
+        var username = $scope.userName;
+        var password = $scope.password;
+
+        //Try to log in to account
+        $http({method: "POST", url: '/rest/login',
+            data: {'Username': username, 'Password': password}
+        }).success(function(data, status, headers, config) {
+                $window.location.href = "/dashboard.html";
+
+            }).
+            error(function(data, status, headers, config) {
+                $window.alert("Wrong username/password. Please try again");
+            });
+    }
+}]);
+
 myApp.controller('makeAccountController', ["$scope", "$http", "$window", function($scope, $http, $window) {
 
     $scope.signUp = function() {
@@ -49,6 +69,13 @@ myApp.controller('makeAccountController', ["$scope", "$http", "$window", functio
         $http({method: "POST", url: '/rest/makeStormpathAccount',
                data: {'first_name': firstName, 'last_name': lastName, 'user_name': userName, 'email': email, 'password': password}
         }).success(function(data, status, headers, config) {
+
+            //Clear Create Account fields
+            $scope.firstName = "";
+            $scope.lastName = "";
+            $scope.userName = "";
+            $scope.email = "";
+            $scope.password = "";
             $window.alert("Account Created! Now, Sign In!");
 
         }).
@@ -57,87 +84,6 @@ myApp.controller('makeAccountController', ["$scope", "$http", "$window", functio
         });
     }
 
-}]);
-
-myApp.controller('OauthTokenController', ["$scope", "$http", "$window",'sharedProperties', function($scope, $http, $window, sharedProperties) {
-
-    $scope.getOauthToken = function() {
-
-        var myData = $.param({grant_type: "client_credentials"})
-
-        //Try and get an Oauth Token
-        $http({method: "POST", url: '/rest/oauthToken',
-            headers: {'Authorization': 'Basic ' + sharedProperties.getEncodedAuth(), 'Content-Type': 'application/x-www-form-urlencoded'},
-            data : myData})
-
-            .success(function(data, status, headers, config) {
-                console.log(data.access_token);
-                var oauthToken = data.access_token;
-                sharedProperties.setOauthToken(oauthToken);
-                $scope.oauthToken = oauthToken;
-
-
-            }).
-            error(function(data, status, headers, config) {
-                $window.alert("Error");
-            });
-        }
-
-
-}]);
-
-myApp.controller('loginController', ["$scope", "$window", "$http", function($scope, $window, $http) {
-
-    $scope.submitFunction = function() {
-
-        var username = $scope.userName;
-        var password = $scope.password;
-
-        //Try to log in to account
-        $http({method: "POST", url: '/rest/login',
-            data: {'Username': username, 'Password': password}
-            }).success(function(data, status, headers, config) {
-                  $window.location.href = "/dashboard.html";
-
-          }).
-          error(function(data, status, headers, config) {
-                $window.alert("Wrong username/password. Please try again");
-          });
-    }
-}]);
-
-myApp.controller('RestBasicController', ["$scope", "$window", "$http", 'sharedProperties', function($scope, $window, $http, sharedProperties) {
-
-    $scope.makeRestCall = function() {
-
-        //Get the temperature of specified city from REST endpoint, using Basic Auth
-        $http({method: "GET", url: '/rest/api/weather/' + $scope.city, headers: {'Authorization': 'Basic ' + sharedProperties.getEncodedAuth()}}).success(function(data, status, headers, config) {
-            $scope.temp = data;
-            $scope.myCity = $scope.city;
-
-        })
-        .error(function(data, status, headers, config) {
-            $window.alert("Error");
-        });
-
-    }
-}]);
-
-myApp.controller('RestOauthController', ["$scope", "$window", "$http", 'sharedProperties', function($scope, $window, $http, sharedProperties) {
-
-    $scope.makeRestCall = function() {
-
-        //Get the temperature of specified city from REST endpoint, using Oauth
-        $http({method: "GET", url: '/rest/api/weather/' + $scope.city, headers: {'Authorization': 'Bearer ' + sharedProperties.getOauthToken()}}).success(function(data, status, headers, config) {
-            $scope.temp = data;
-            $scope.myCity = $scope.city;
-
-        })
-            .error(function(data, status, headers, config) {
-                $window.alert("Error");
-            });
-
-    }
 }]);
 
 myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', function($scope, $http, sharedProperties) {
@@ -171,4 +117,71 @@ myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', fun
             window.alert("Error");
         });
 
+}]);
+
+
+myApp.controller('RestBasicController', ["$scope", "$window", "$http", 'sharedProperties', function($scope, $window, $http, sharedProperties) {
+
+    $scope.myCity = "______";
+
+    $scope.makeRestCall = function() {
+
+        //Get the temperature of specified city from REST endpoint, using Basic Auth
+        $http({method: "GET", url: '/rest/api/weather/' + $scope.city, headers: {'Authorization': 'Basic ' + sharedProperties.getEncodedAuth()}}).success(function(data, status, headers, config) {
+            $scope.temp = data;
+            $scope.myCity = $scope.city;
+
+        })
+            .error(function(data, status, headers, config) {
+                $window.alert("Error");
+            });
+
+    }
+}]);
+
+myApp.controller('OauthTokenController', ["$scope", "$http", "$window",'sharedProperties', function($scope, $http, $window, sharedProperties) {
+
+    $scope.getOauthToken = function() {
+
+        var myData = $.param({grant_type: "client_credentials"})
+
+        //Try and get an Oauth Token
+        $http({method: "POST", url: '/rest/oauthToken',
+            headers: {'Authorization': 'Basic ' + sharedProperties.getEncodedAuth(), 'Content-Type': 'application/x-www-form-urlencoded'},
+            data : myData})
+
+            .success(function(data, status, headers, config) {
+                console.log(data.access_token);
+                var oauthToken = data.access_token;
+                sharedProperties.setOauthToken(oauthToken);
+                $scope.oauthToken = oauthToken;
+
+
+            }).
+            error(function(data, status, headers, config) {
+                $window.alert("Error");
+            });
+        }
+
+
+}]);
+
+
+myApp.controller('RestOauthController', ["$scope", "$window", "$http", 'sharedProperties', function($scope, $window, $http, sharedProperties) {
+
+    $scope.myCity = "______";
+
+    $scope.makeRestCall = function() {
+
+        //Get the temperature of specified city from REST endpoint, using Oauth
+        $http({method: "GET", url: '/rest/api/weather/' + $scope.city, headers: {'Authorization': 'Bearer ' + sharedProperties.getOauthToken()}}).success(function(data, status, headers, config) {
+            $scope.temp = data;
+            $scope.myCity = $scope.city;
+
+        })
+            .error(function(data, status, headers, config) {
+                $window.alert("Error");
+            });
+
+    }
 }]);

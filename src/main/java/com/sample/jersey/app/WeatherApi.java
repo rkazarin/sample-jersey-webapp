@@ -23,7 +23,6 @@ import java.io.*;
 @Path("/api/weather/{city}")
 public class WeatherApi {
 
-    String applicationHref = "https://api.stormpath.com/v1/applications/5HRNSljrcYQax0oCQQovT9";
     @Context
     private HttpServletRequest servletRequest;
     @Context
@@ -33,10 +32,7 @@ public class WeatherApi {
     @Produces(MediaType.APPLICATION_JSON)
     public String getWeatherApi(@PathParam("city") String myCity) throws Exception {
 
-        StormpathClient stormpathClient = new StormpathClient();
-        Client myClient = stormpathClient.getClient();
-
-        Application application = myClient.getResource(applicationHref, Application.class);
+        Application application = StormpathUtils.myClient.getResource(StormpathUtils.applicationHref, Application.class);
 
         System.out.println(servletRequest.getHeader("Authorization"));
 
@@ -67,7 +63,7 @@ public class WeatherApi {
 
         String result = city.toString();
 
-        return result;
+        return result + "°F";
     }
 
 }
