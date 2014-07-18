@@ -2,31 +2,40 @@
 <html ng-app="loginForm">
 <head>
     <title>Login</title>
+
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/bootstrap/css/signin.css" rel="stylesheet" media="screen">
+
 </head>
 <body>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.14/angular.min.js"></script>
     <script src ="app.js"></script>
 
-    <br>
-    Have an Account? <br>
-    <form ng-submit="submitFunction()" ng-controller="loginController">
-        <input type="text" ng-model="userName"> User Name <br>
-        <input type="password" ng-model="password"> Password <br>
-        <button type="submit" >Sign In</button>
+    <div class="container">
+        <form class="form-signin" role="form" ng-submit="submitFunction()" ng-controller="loginController">
+        <h2 class="form-signin-heading">Have an Account?</h2>
+
+        <input type="text" class="form-control" placeholder="Email address or username" ng-model="userName">
+        <input type="password" class="form-control" placeholder="Password" ng-model="password">
+        <button class="btn btn-lg btn-primary btn-block" type="submit" >Sign In</button>
+
     </form>
 
-    <br>
-    New User? Make an account!
-    <form ng-submit="signUp()" ng-controller="makeAccountController">
-        <input type="text" ng-model="firstName"> First Name <br>
-        <input type="text" ng-model="lastName"> Last Name <br>
-        <input type="text" ng-model="userName"> User Name <br>
-        <input type="text" ng-model="email"> Email <br>
-        <input type="password" ng-model="password"> Password <br>
-        <button type="submit">Make Account</button>
+    <form class="form-signin" role="form" ng-submit="signUp()" ng-controller="makeAccountController">
+
+        <h2 class="form-signin-heading">No Account? Sign up!</h2>
+
+        <input type="text" class="form-control" placeholder="First name" ng-model="firstName">
+        <input type="text" class="form-control" placeholder="Last name" ng-model="lastName">
+        <input type="text" class="form-control" placeholder="Username" ng-model="userName">
+        <input type="text" class="form-control" placeholder="Email address" ng-model="email">
+        <input type="password" class="form-control" placeholder="Password" ng-model="password">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Make Account</button>
     </form>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

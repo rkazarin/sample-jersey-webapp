@@ -1,15 +1,11 @@
 package com.sample.jersey.app;
 
-import com.stormpath.sdk.api.ApiAuthenticationResult;
 import com.stormpath.sdk.application.Application;
-import com.stormpath.sdk.authc.AuthenticationResultVisitorAdapter;
-import com.stormpath.sdk.client.Client;
+
 import com.stormpath.sdk.http.HttpMethod;
 import com.stormpath.sdk.http.HttpRequest;
-import com.stormpath.sdk.http.HttpRequestBuilder;
 import com.stormpath.sdk.http.HttpRequests;
 import com.stormpath.sdk.oauth.AccessTokenResult;
-import com.stormpath.sdk.oauth.OauthAuthenticationResult;
 import com.stormpath.sdk.oauth.TokenResponse;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +15,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
