@@ -8,6 +8,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Context;
 
 import com.stormpath.sdk.api.ApiAuthenticationResult;
+import com.stormpath.sdk.authc.AuthenticationResultVisitorAdapter;
+import com.stormpath.sdk.oauth.OauthAuthenticationResult;
 import com.stormpath.sdk.resource.ResourceException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -28,9 +30,11 @@ public class WeatherApi {
     @Context
     private HttpServletResponse servletResponse;
 
+    private String weatherResult;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getWeatherApi(@PathParam("city") String myCity) throws Exception {
+    public String getWeatherApi(@PathParam("city") final String myCity) throws Exception {
 
         Application application = StormpathUtils.myClient.getResource(StormpathUtils.applicationHref, Application.class);
 
@@ -40,30 +44,98 @@ public class WeatherApi {
         try {
             ApiAuthenticationResult authenticationResult = application.authenticateApiRequest(servletRequest);
 
+
+            authenticationResult.accept(new AuthenticationResultVisitorAdapter() {
+
+                public void visit(ApiAuthenticationResult result) {
+                    System.out.println("Basic request");
+
+                    URL weatherURL = getURL(myCity);
+
+                    //Parse weather data into our POJO
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    City city = null;
+
+                    try {
+                        InputStream in = weatherURL.openStream();
+                        city = mapper.readValue(in, City.class);
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    weatherResult = city.toString() + " °F";
+                }
+
+                public void visit(OauthAuthenticationResult result) {
+
+                    System.out.println("Oauth request");
+
+                    System.out.println(result.getScope().toString());
+
+                    //Check scopes
+                    if(result.getScope().contains("london") && myCity.equals("London")){
+                        System.out.println("The scope contains london");
+
+                        weatherResult = getWeather(myCity) + " °F";;
+                    }
+                    else if(result.getScope().contains("berlin") && myCity.equals("Berlin")){
+                        System.out.println("The scope contains berlin");
+
+                        weatherResult = getWeather(myCity) + " °F";;
+                    }
+                    else {
+                        try {
+                            servletResponse.sendError(403);
+                        } catch (IOException e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
+
+                    }
+                }
+
+            });
+
+            return weatherResult;
+
         } catch (ResourceException e) {
             System.out.println(e.getMessage());
             servletResponse.sendError(403);
             return "Cannot authenticate user.";
         }
+    }
 
-        URL weatherURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + myCity);
+    private URL getURL(String city) {
+
+        URL weatherURL = null;
+        try {
+            weatherURL = new URL("http://api.openweathermap.org/data/2.5/weather?q=" + city);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("City is invalid");
+        }
+
+        return weatherURL;
+
+    }
+
+    private String getWeather(String city) {
+        URL weatherURL = getURL(city);
 
         //Parse weather data into our POJO
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        City city = null;
+        City myCity = null;
 
         try {
             InputStream in = weatherURL.openStream();
-            city = mapper.readValue(in, City.class);
+            myCity = mapper.readValue(in, City.class);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String result = city.toString();
-
-        return result + "°F";
+        return myCity.toString();
     }
 
 }

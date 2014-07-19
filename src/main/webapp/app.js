@@ -143,7 +143,17 @@ myApp.controller('OauthTokenController', ["$scope", "$http", "$window",'sharedPr
 
     $scope.getOauthToken = function() {
 
-        var myData = $.param({grant_type: "client_credentials"})
+        var myData = $.param({grant_type: "client_credentials"});
+        var scopeData = "";
+
+        if($scope.london == true){
+            scopeData = scopeData + "london";
+            myData = $.param({grant_type: "client_credentials", scope: scopeData});
+        }
+        if($scope.berlin == true){
+            scopeData = scopeData + " berlin";
+            myData = $.param({grant_type: "client_credentials", scope: scopeData});
+        }
 
         //Try and get an Oauth Token
         $http({method: "POST", url: '/rest/oauthToken',
@@ -180,7 +190,7 @@ myApp.controller('RestOauthController', ["$scope", "$window", "$http", 'sharedPr
 
         })
             .error(function(data, status, headers, config) {
-                $window.alert("Error");
+                $window.alert("Permission Denied!");
             });
 
     }

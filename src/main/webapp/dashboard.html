@@ -55,12 +55,16 @@
                    </form>
                </div>
 
-               <div class = "getOauthToken" ng-controller="OauthTokenController" ng-show="showOauthTokenGen">
-                   Click GetOauth to get an Oauth Bearer Token: <br>
-                   <div class="oauthTokenText">
-                   {{oauthToken}}
-                   </div><br>
-                    <button class="myButton" ng-click="getOauthToken()">GetOauth</button>
+               <div class = "getOauthToken" ng-show="showOauthTokenGen">
+                   <form name = "scopeForm" ng-controller="OauthTokenController">
+                       <input type="checkbox" ng-model="london">Check to have access to London's weather<br>
+                       <input type="checkbox" ng-model="berlin">Check to have access to Berlin's weather <br>
+                       Click GetOauth to get an Oauth Bearer Token: <br>
+                       <div class="oauthTokenText">
+                           {{oauthToken}}
+                       </div><br>
+                        <button class="myButton" ng-click="getOauthToken()">GetOauth</button>
+                   </form>
                </div>
 
                <div class = "oauthCall" ng-show="showOauthRestCall">
