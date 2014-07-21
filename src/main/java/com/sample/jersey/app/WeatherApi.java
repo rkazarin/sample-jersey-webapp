@@ -75,13 +75,23 @@ public class WeatherApi {
                     System.out.println(result.getScope().toString());
 
                     //Check scopes
-                    if(result.getScope().contains("london") && myCity.equals("London")){
+                    if(result.getScope().contains("London") && myCity.equals("London")){
                         System.out.println("The scope contains london");
 
                         weatherResult = getWeather(myCity) + " °F";;
                     }
-                    else if(result.getScope().contains("berlin") && myCity.equals("Berlin")){
+                    else if(result.getScope().contains("Berlin") && myCity.equals("Berlin")){
                         System.out.println("The scope contains berlin");
+
+                        weatherResult = getWeather(myCity) + " °F";;
+                    }
+                    else if(result.getScope().contains("SanMateo") && myCity.equals("San Mateo")){
+                        System.out.println("The scope contains San Mateo");
+
+                        weatherResult = getWeather(myCity) + " °F";;
+                    }
+                    else if(result.getScope().contains("SanFrancisco") && myCity.equals("San Francisco")){
+                        System.out.println("The scope contains San Francisco");
 
                         weatherResult = getWeather(myCity) + " °F";;
                     }

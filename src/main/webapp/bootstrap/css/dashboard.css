@@ -24,10 +24,11 @@ header
 
 .jumbotron {
     margin-top: 2em;
-    height: 35em;
+    height: 55em;
     width: 40em;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 5em;
 }
 
 input[type="radio"] {

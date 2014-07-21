@@ -47,31 +47,42 @@
 
            <div class="jumbotron">
                <div class = "basicCall" ng-show="showBasicRestCall">
+                   <h5>Select the city whose weather you want to view using Basic authentication: </h5>
                    <form name = "myForm" ng-controller="RestBasicController">
                    <input type="radio" ng-model="city" value="London"> London <br/>
                    <input type="radio" ng-model="city" value="Berlin"> Berlin <br/>
+                   <input type="radio" ng-model="city" value="San Mateo"> San Mateo <br/>
+                   <input type="radio" ng-model="city" value="San Francisco"> San Francisco <br/>
                    <button class="myButton" ng-click="makeRestCall()">Make Rest Call</button>
                    The temperature in {{myCity}} is: {{temp}}</br>
                    </form>
                </div>
 
                <div class = "getOauthToken" ng-show="showOauthTokenGen">
+                   <h5>Select the cities whose weather you want permission to view: </h4>
                    <form name = "scopeForm" ng-controller="OauthTokenController">
-                       <input type="checkbox" ng-model="london">Check to have access to London's weather<br>
-                       <input type="checkbox" ng-model="berlin">Check to have access to Berlin's weather <br>
-                       Click GetOauth to get an Oauth Bearer Token: <br>
-                       <div class="oauthTokenText">
-                           {{oauthToken}}
-                       </div><br>
-                        <button class="myButton" ng-click="getOauthToken()">GetOauth</button>
+                    <table>
+                        <tr ng-repeat="doc in providers">
+                            <td> <input type="checkbox" ng-model="ids[doc.provider.ScopeName]"> {{doc.provider.Id}} </td>
+                        </tr>
+                    </table>
+                   <h5>Click GetOauth to get an Oauth Bearer Token: </h5><br>
+                   <div class="oauthTokenText">
+                   {{oauthToken}}
+                   </div><br>
+                       <button class="myButton" ng-click="getOauthToken()">GetOauth</button>
                    </form>
+
                </div>
 
                <div class = "oauthCall" ng-show="showOauthRestCall">
+                   <h5>Select the city whose weather you want to view using Oauth: </h5>
                    <form name = "myForm2" ng-controller="RestOauthController">
                    <input type="radio" ng-model="city" value="London"> London <br/>
                    <input type="radio" ng-model="city" value="Berlin"> Berlin <br/>
-                   <button class="myButton" ng-click="makeRestCall()">Make Rest Call</button>
+                   <input type="radio" ng-model="city" value="San Mateo"> San Mateo <br/>
+                   <input type="radio" ng-model="city" value="San Francisco"> San Francisco <br/>
+                       <button class="myButton" ng-click="makeRestCall()">Make Rest Call</button>
                    The temperature in {{myCity}} is: {{temp}}</br>
                    </form>
                </div>

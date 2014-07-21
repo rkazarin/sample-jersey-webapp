@@ -141,19 +141,33 @@ myApp.controller('RestBasicController', ["$scope", "$window", "$http", 'sharedPr
 
 myApp.controller('OauthTokenController', ["$scope", "$http", "$window",'sharedProperties', function($scope, $http, $window, sharedProperties) {
 
+    $scope.providers = [{provider:{Id:'London', ScopeName: 'London'}},{provider:{Id:'Berlin', ScopeName: 'Berlin'}},
+        {provider:{Id:'San Mateo', ScopeName: 'SanMateo'}}, {provider:{Id:'San Francisco', ScopeName: 'SanFrancisco'}}];
+    $scope.ids = {};
+
+
     $scope.getOauthToken = function() {
 
         var myData = $.param({grant_type: "client_credentials"});
         var scopeData = "";
 
-        if($scope.london == true){
-            scopeData = scopeData + "london";
-            myData = $.param({grant_type: "client_credentials", scope: scopeData});
+        var first = 0;
+        for(var i in $scope.ids) {
+            console.log(i + "=" + $scope.ids[i]);
+            if($scope.ids[i] == true){
+                if(first == 0) {
+                    scopeData = scopeData + i;
+                    first = 1;
+                }
+                else{
+                    scopeData = scopeData + " " + i;
+                }
+            }
         }
-        if($scope.berlin == true){
-            scopeData = scopeData + " berlin";
-            myData = $.param({grant_type: "client_credentials", scope: scopeData});
-        }
+
+        myData = $.param({grant_type: "client_credentials", scope: scopeData});
+
+        console.log(myData);
 
         //Try and get an Oauth Token
         $http({method: "POST", url: '/rest/oauthToken',
