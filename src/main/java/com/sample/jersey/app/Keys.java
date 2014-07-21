@@ -1,8 +1,12 @@
 package com.sample.jersey.app;
 
+import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.api.ApiKey;
 import com.stormpath.sdk.api.ApiKeyList;
 import org.codehaus.jettison.json.JSONObject;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,12 +19,27 @@ import java.util.Iterator;
 public class Keys {
 
     @Context
+    private HttpServletRequest servletRequest;
+
+    @Context
     private HttpServletResponse servletResponse;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getApiKey() throws Exception {
-        ApiKeyList apiKeyList = CurrentUser.authenticated.getApiKeys();
+
+        Cookie[] myCookies = servletRequest.getCookies();
+        String accountHref = "";
+        for(int i = 0; i < myCookies.length; i++) {
+            if(myCookies[i].getName().equals("accountHref")) {
+                accountHref = myCookies[i].getValue();
+                break;
+            }
+        }
+
+        Account account = StormpathUtils.myClient.getResource(accountHref, Account.class);
+
+        ApiKeyList apiKeyList = account.getApiKeys();
 
         boolean hasApiKey = false;
         String apiKeyId = "";
@@ -36,7 +55,7 @@ public class Keys {
 
         //If account doesn't have an API Key, generate one
         if(hasApiKey == false) {
-            ApiKey newApiKey = CurrentUser.authenticated.createApiKey();
+            ApiKey newApiKey = account.createApiKey();
             apiKeyId = newApiKey.getId();
             apiSecret = newApiKey.getSecret();
         }

@@ -54,6 +54,22 @@ myApp.controller('loginController', ["$scope", "$window", "$http", function($sco
     }
 }]);
 
+myApp.controller('logoutController', ["$scope", "$window", "$http", function($scope, $window, $http) {
+
+    $scope.makeLogoutCall = function() {
+
+        $http({method: "GET", url: '/rest/logout',
+        }).success(function(data, status, headers, config) {
+                $window.alert("Logging out...");
+                $window.location.href = "/login.html";
+
+            }).
+            error(function(data, status, headers, config) {
+                $window.alert("Log out failure");
+            });
+    }
+}]);
+
 myApp.controller('makeAccountController', ["$scope", "$http", "$window", function($scope, $http, $window) {
 
     $scope.signUp = function() {
@@ -86,7 +102,7 @@ myApp.controller('makeAccountController', ["$scope", "$http", "$window", functio
 
 }]);
 
-myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', function($scope, $http, sharedProperties) {
+myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', '$window', function($scope, $http, sharedProperties, $window) {
 
     //Get an API key and secret
     $http({method: "GET", url: '/rest/getApiKey'}).success(function(data, status, headers, config) {
@@ -114,7 +130,8 @@ myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', fun
 
     })
         .error(function(data, status, headers, config) {
-            window.alert("Error");
+            $window.alert("Please login.");
+            $window.location.href = "/login.html";
         });
 
 }]);

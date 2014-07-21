@@ -12,6 +12,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 
+import javax.servlet.http.Cookie;
+
 
 @Path("/login")
 public class Login {
@@ -30,7 +32,7 @@ public class Login {
         String password = json.getString("Password");
 
         AuthenticationRequest request = new UsernamePasswordRequest(username, password);
-        Account authenticated = null;
+        Account authenticated;
 
         //Try to authenticate the account
         try {
@@ -40,10 +42,17 @@ public class Login {
             System.out.println("Failed to auth user");
             System.out.println("Going to fresh login page...try again.");
             servletResponse.sendError(401);
+            return;
         }
 
+        Cookie myCookie = new Cookie("accountHref", authenticated.getHref());
+
+        myCookie.setMaxAge(60 * 60);
+        myCookie.setPath("/");
+        myCookie.setHttpOnly(true);
+        servletResponse.addCookie(myCookie);
         //Set the CurrentUser's account to the authenticated Account
-        CurrentUser.authenticated = authenticated;
+//        CurrentUser.authenticated = authenticated;
         CurrentUser.user_name = username;
 
     }
