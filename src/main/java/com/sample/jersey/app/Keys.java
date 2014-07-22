@@ -8,6 +8,7 @@ import org.codehaus.jettison.json.JSONObject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -26,16 +27,7 @@ public class Keys {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getApiKey() throws Exception {
-
-        Cookie[] myCookies = servletRequest.getCookies();
-        String accountHref = "";
-        for(int i = 0; i < myCookies.length; i++) {
-            if(myCookies[i].getName().equals("accountHref")) {
-                accountHref = myCookies[i].getValue();
-                break;
-            }
-        }
+    public String getApiKey(@CookieParam("accountHref") String accountHref) throws Exception {
 
         Account account = StormpathUtils.myClient.getResource(accountHref, Account.class);
 
