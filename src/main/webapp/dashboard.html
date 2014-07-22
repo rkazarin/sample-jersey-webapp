@@ -41,12 +41,11 @@
        <div class="col-xs-2"></div>
        <div class="col-xs-10">
 
-           <header>
-               <h1>Dashboard</h1>
-           </header>
-
            <div class="apiKey" ng-controller="ApiKeyController">
-              <span id="apiText"> apiKey : apiKeySecret</span> </br>
+               <header>
+                   <h1> {{ userName }}'s Dashboard</h1>
+               </header>
+               <span id="apiText"> apiKey : apiKeySecret</span> </br>
               <span id="apiKeyId">{{ apiKey }}</span> : <span id="apiKeySecret">{{ apiSecret }}</span>
            </div>
 

@@ -4,6 +4,7 @@ import com.stormpath.sdk.api.ApiKey;
 import com.stormpath.sdk.api.ApiKeys;
 import com.stormpath.sdk.client.Client;
 import com.stormpath.sdk.client.Clients;
+import com.stormpath.sdk.impl.cache.DefaultCacheManager;
 
 public class StormpathClient {
 
@@ -12,7 +13,7 @@ public class StormpathClient {
     public Client getClient() {
 
         ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
-        Client client = Clients.builder().setApiKey(apiKey).build();
+        Client client = Clients.builder().setApiKey(apiKey).setCacheManager(new DefaultCacheManager()).build();
 
         return client;
 

@@ -46,14 +46,10 @@ public class Login {
         }
 
         Cookie myCookie = new Cookie("accountHref", authenticated.getHref());
-
         myCookie.setMaxAge(60 * 60);
         myCookie.setPath("/");
         myCookie.setHttpOnly(true);
         servletResponse.addCookie(myCookie);
-        //Set the CurrentUser's account to the authenticated Account
-//        CurrentUser.authenticated = authenticated;
-        CurrentUser.user_name = username;
 
     }
 }

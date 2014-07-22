@@ -5,6 +5,7 @@ myApp.service('sharedProperties', function() {
     var apiSecret = "";
     var encodedAuth = "";
     var oauthToken = "";
+    var userName = "";
 
     return {
         getApiKey: function() {
@@ -30,11 +31,17 @@ myApp.service('sharedProperties', function() {
         },
         setOauthToken: function(value) {
             oauthToken = value;
+        },
+        getUsername: function() {
+            return userName;
+        },
+        setUsername: function(value) {
+            userName = value;
         }
     };
 });
 
-myApp.controller('loginController', ["$scope", "$window", "$http", function($scope, $window, $http) {
+myApp.controller('loginController', ["$scope", "$window", "$http", 'sharedProperties', function($scope, $window, $http, sharedProperties) {
 
     $scope.submitFunction = function() {
 
@@ -60,12 +67,11 @@ myApp.controller('logoutController', ["$scope", "$window", "$http", function($sc
 
         $http({method: "GET", url: '/rest/logout',
         }).success(function(data, status, headers, config) {
-                $window.alert("Logging out...");
                 $window.location.href = "/login.html";
 
             }).
             error(function(data, status, headers, config) {
-                $window.alert("Log out failure");
+                $window.alert("Log out error");
             });
     }
 }]);
@@ -109,6 +115,8 @@ myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', '$w
 
         $scope.apiKey = data.api_key;
         $scope.apiSecret = data.api_secret;
+        var username = data.username;
+        $scope.userName = username;
 
         sharedProperties.setApiKey($scope.apiKey);
         sharedProperties.setApiSecret($scope.apiSecret);
@@ -126,11 +134,12 @@ myApp.controller('ApiKeyController', ["$scope", "$http", 'sharedProperties', '$w
         var toEncode = sharedProperties.getApiKey().concat(':', sharedProperties.getApiSecret());
         var encodedAuth = Base64.encode(toEncode);
         sharedProperties.setEncodedAuth(encodedAuth);
+        sharedProperties.setUsername(username);
 
 
     })
         .error(function(data, status, headers, config) {
-            $window.alert("Please login.");
+            $window.alert("Please log in");
             $window.location.href = "/login.html";
         });
 

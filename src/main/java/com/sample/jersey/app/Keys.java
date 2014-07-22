@@ -60,10 +60,14 @@ public class Keys {
             apiSecret = newApiKey.getSecret();
         }
 
+        //Get the username of the account
+        String username = account.getUsername();
+
         //Make a JSON object with the key and secret to send back to the client
         JSONObject json = new JSONObject();
         json.put("api_key", apiKeyId);
         json.put("api_secret", apiSecret);
+        json.put("username", username);
 
         return json.toString();
     }
