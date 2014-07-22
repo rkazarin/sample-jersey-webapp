@@ -7,7 +7,6 @@ public class MyServlet implements ServletContextListener {
 
     public void contextInitialized(ServletContextEvent e) {
         System.out.println("Context Initialized");
-        System.out.println("Creating new client...");
 
         StormpathClient stormpathClient = new StormpathClient();
         Client myClient = stormpathClient.getClient();

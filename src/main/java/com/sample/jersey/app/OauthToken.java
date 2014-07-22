@@ -36,8 +36,6 @@ public class OauthToken {
           See: https://java.net/jira/browse/JERSEY-766
          */
 
-        //HttpRequestBuilder newBuilder = HttpRequests.method(HttpMethod.POST);
-
         Map<String, String[]> headers = new HashMap<String, String[]>();
 
         for(String httpHeaderName : httpHeaders.getRequestHeaders().keySet()) {

@@ -23,19 +23,18 @@ public class JerseyFilter implements ContainerRequestFilter {
         String myPath = myURI.getPath();
 
             if(myPath.equals("/rest/getApiKey")) {
-                System.out.println("Account from cookie: " + requestContext.getCookies());
                 Iterator it = requestContext.getCookies().entrySet().iterator();
                 String accountHref = "";
                 while(it.hasNext()) {
                     Map.Entry pairs = (Map.Entry)it.next();
                     if(pairs.getKey().equals("accountHref")) {
-                        System.out.println(pairs.getKey() + " = " + pairs.getValue());
                         String hrefCookie = pairs.getValue().toString();
                         accountHref = hrefCookie.substring(hrefCookie.indexOf("https://"));
                     }
                 }
                 if(!accountHref.equals("")) {
-                    System.out.println("Cookie for this account exists");
+                    //Cookie exists, continue.
+                    return;
                 }
                 else {
                     System.out.println("Not logged in");
@@ -43,14 +42,6 @@ public class JerseyFilter implements ContainerRequestFilter {
                 }
 
         }
-
-        //find cookie for this request
-
-        //Cehck if account is valid, if the cookie is valid
-
-        //continue if everything passes
-        //if error send user to login
-
 
     }
 }

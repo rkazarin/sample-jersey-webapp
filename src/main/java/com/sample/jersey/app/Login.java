@@ -39,8 +39,7 @@ public class Login {
             authenticated = application.authenticateAccount(request).getAccount();
 
         } catch (ResourceException e) {
-            System.out.println("Failed to auth user");
-            System.out.println("Going to fresh login page...try again.");
+            System.out.println("Failed to authenticate user");
             servletResponse.sendError(401);
             return;
         }
