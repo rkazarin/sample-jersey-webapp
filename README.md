@@ -8,8 +8,8 @@ This project requires maven.
 Get started:
 
 <code>
-$ git clone https://github.com/rkazarin/sample-jersey-webapp.git
-$ cd sample-jersey-webapp
+$ git clone https://github.com/rkazarin/sample-jersey-webapp.git <br>
+$ cd sample-jersey-webapp <br>
 $ mvn install
 </code>
 
