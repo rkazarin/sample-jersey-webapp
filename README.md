@@ -7,10 +7,10 @@ This project requires maven.
 
 Get started:
 
-<code>
-$ git clone https://github.com/rkazarin/sample-jersey-webapp.git <br>
-$ cd sample-jersey-webapp <br>
+'''
+$ git clone https://github.com/rkazarin/sample-jersey-webapp.git
+$ cd sample-jersey-webapp
 $ mvn install
-</code>
+'''
 
 Deploy the .war file to your web container/application server and launch/access it according to your container's configuration.
