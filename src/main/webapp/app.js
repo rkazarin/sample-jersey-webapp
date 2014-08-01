@@ -50,7 +50,7 @@ myApp.controller('loginController', ["$scope", "$window", "$http", 'sharedProper
 
         //Try to log in to account
         $http({method: "POST", url: '/rest/login',
-            data: {'Username': username, 'Password': password}
+            data: {'username': username, 'password': password}
         }).success(function(data, status, headers, config) {
                 $window.location.href = "/dashboard.html";
 

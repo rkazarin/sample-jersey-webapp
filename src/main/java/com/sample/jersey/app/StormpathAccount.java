@@ -26,27 +26,18 @@ import java.io.*;
 public class StormpathAccount {
 
     @POST
-    public void createAccount(String data) throws Exception {
+    public void createAccount(UserAccount userAccount) throws Exception {
 
 
         Application application = StormpathUtils.myClient.getResource(StormpathUtils.applicationHref, Application.class);
         Account account = StormpathUtils.myClient.instantiate(Account.class);
 
-        //Get data from request
-        JSONObject json = new JSONObject(data);
-
-        String firstName = json.getString("first_name");
-        String lastName = json.getString("last_name");
-        String userName = json.getString("user_name");
-        String email = json.getString("email");
-        String password = json.getString("password");
-
         //Set account info and create the account
-        account.setGivenName(firstName);
-        account.setSurname(lastName);
-        account.setUsername(userName);
-        account.setEmail(email);
-        account.setPassword(password);
+        account.setGivenName(userAccount.getFirstName());
+        account.setSurname(userAccount.getLastName());
+        account.setUsername(userAccount.getUserName());
+        account.setEmail(userAccount.getEmail());
+        account.setPassword(userAccount.getPassword());
 
         application.createAccount(account);
 

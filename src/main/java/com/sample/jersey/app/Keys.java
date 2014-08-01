@@ -3,31 +3,22 @@ package com.sample.jersey.app;
 import com.stormpath.sdk.account.Account;
 import com.stormpath.sdk.api.ApiKey;
 import com.stormpath.sdk.api.ApiKeyList;
-import org.codehaus.jettison.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 @Path("/getApiKey")
 public class Keys {
 
-    @Context
-    private HttpServletRequest servletRequest;
-
-    @Context
-    private HttpServletResponse servletResponse;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getApiKey(@CookieParam("accountHref") String accountHref) throws Exception {
+    public Map getApiKey(@CookieParam("accountHref") String accountHref) throws Exception {
 
         Account account = StormpathUtils.myClient.getResource(accountHref, Account.class);
 
@@ -56,11 +47,13 @@ public class Keys {
         String username = account.getUsername();
 
         //Make a JSON object with the key and secret to send back to the client
-        JSONObject json = new JSONObject();
-        json.put("api_key", apiKeyId);
-        json.put("api_secret", apiSecret);
-        json.put("username", username);
 
-        return json.toString();
+        Map<String, String> response = new HashMap<>();
+
+        response.put("api_key", apiKeyId);
+        response.put("api_secret", apiSecret);
+        response.put("username", username);
+
+        return response;
     }
 }

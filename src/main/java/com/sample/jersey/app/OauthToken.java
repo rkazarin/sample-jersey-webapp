@@ -68,12 +68,6 @@ public class OauthToken {
                 HashSet returnedScopes = new HashSet();
                 Account account = result.getAccount();
 
-                System.out.println("In The Scope Factory");
-
-                System.out.println(requestedScopes.toString());
-
-                System.out.println(requestedScopes.size());
-
                 /***
                  *  In this simple web application, the scopes that were sent in the body of the request
                  *  are exactly the ones we want to return. If however we were building something more complex, and
@@ -100,5 +94,4 @@ public class OauthToken {
         return json;
 
     }
-
 }
