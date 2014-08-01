@@ -15,7 +15,6 @@ $ mvn install
 Deploy the .war file to your web container/application server and launch/access it according to your container's configuration.
 
 Questions or suggestions? Please don't hesitate to email me at roman.kazarin@stormpath.com
-====================
 
 ### Application walkthrough:
 
